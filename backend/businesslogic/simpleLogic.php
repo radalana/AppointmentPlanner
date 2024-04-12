@@ -13,12 +13,12 @@ class SimpleLogic
     function handleRequest($method, $param)
     {
         switch ($method) {
-            case "queryPersons":
-                return $this->dh->queryPersons();
+            case "queryPersons": //queryAppointmentslist
+                return $this->dh->queryPersons();//queryAppointment?? или уже в queryAppointments
             case "queryPersonById":
-                return $this->dh->queryPersonById($param);
+                return $this->dh->queryPersonById($param);//delete appointment
             case "queryPersonByName":
-                return $this->dh->queryPersonByName($param);
+                return $this->dh->queryPersonByName($param);//sent voice
             default:
                 return null;
         }

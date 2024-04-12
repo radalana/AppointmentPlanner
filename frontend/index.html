@@ -13,37 +13,82 @@
 
 </head>
 <body>
-    <div id="container">
-        <!--info-->
+    <div class="container">
         <div class="row">
-            <div class="col-sm"></div>
-            <div class="col-sm-9 bg-secondary">
-                <label for="seachfield" class="form-label">Available Names: "Doe" | "Smith"</label>
+            <div class="col">
+                <h1 class="mb-4">Appointments</h1>
             </div>
-            <div class="col-sm"></div>
         </div>
-
-        <!--Search field-->
+        <form action="">
         <div class="row">
-            <div class="col-sm"></div>
-            <div class="col-sm-9">
-                <div class="input-group">
-                    <input type="text" class="form-control" id="searchfield" placeholder="Search via lastname">
-                    <button type="button" class="btn btn-success" id="btn_Search">Search</button>
+            <div class="table-responsive">
+                <caption>Wanderung mit Alpakas</caption>
+                
+                <table class="table table-hover table-bordered">
+                    
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th><div class="d-flex flex-column justify-content-center"><span>Mär</span><div>23</div><div>DI</div><div class="time">15:00 16:00</div></div></th>
+                            <th>Mär 23 DI 15:00 16:00</th>
+                            <th>Mär 23 DI 15:00 16:00</th>
+                            <th>Mär 23 DI 15:00 16:00</th>
+                            <th>Mär 23 DI 15:00 16:00</th>
+                        </tr>
+                    </thead>
+                    <tbody class = "table-primary">
+                        <tr>
+                            <td>
+                                <div class = "d-flex justify-content-around">
+                                    <i class="bi bi-person-circle text-white"></i>
+                                        <label for=""><input type="text" placeholder="Dein Name"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                    </label>
+                                  </div>                                  
+                            </td>
+                            <td><div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                </label>
+                              </div>
+                             </td>
+                            <td><div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                </label>
+                              </div> 
+                            </td>
+                            <td><div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                </label>
+                              </div> 
+                            </td>
+                            <td><div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                </label>
+                              </div> 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Kommentare</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Kommentar hinzufügen"></textarea>
+                      </div>
                 </div>
             </div>
-            <div class="col-sm"></div>
-        </div>
-
-        <!-- message -->
-        <div class="row">
-            <div class="col-sm"></div>
-            <div class="col-sm-9" id="searchResult">
-                <label for="noOfentries" class="form-label">Number of entries found:</label>
-                <input type="text" readonly class="form-control-plaintext" id="noOfentries">
-            </div>
-            <div class="col-sm"></div>
-        </div>
+        </form>
     </div>
 </body>
 </html>
