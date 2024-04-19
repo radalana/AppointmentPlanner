@@ -1,13 +1,23 @@
 <?php
-include("./models/appointment.php");
+//include("./models/appointment.php"); зачем здесь
+require_once "Database.php";
+
+
 class DataHandler
 {
+    private $db = new Database("localhost", "bif2webscriptinguser", "bif2021", "Appontments_planner");
     public function queryAppointments()
     {
-        return DataHandler::getDemoData();
+        //здесь делает запрос у датабанка?
+        if ($db->connect()) {
+            $db->select('')
+        }else{
+            echo "There was some error connecting to the database.";
+        }
+        //return DataHandler::getDemoData(); //должен вернуть список объектов
     }
 
-    public function queryPersonById($id)
+    public function queryPersonById($id)//отправить голос в дб
     {
         $result = [];
         foreach ($this->queryPersons() as $val) {
@@ -18,7 +28,7 @@ class DataHandler
         return $result;
     }
 
-    public function queryPersonByName($name)
+    public function queryPersonByName($name)//удалить аппоитмент
     {
         $result = [];
         foreach ($this->queryPersons() as $val) {
