@@ -8,7 +8,12 @@
             "name": "Listen for XDebug",
             "type": "php",
             "request": "launch",
-            "port": 9000
+            "port": 9003,
+            "stopOnEntry": false,
+      "pathMappings": {
+        "/opt/lampp/apache2/htdocs": "${workspaceFolder}" // Это должно соответствовать вашему сетапу
+      },
+      "log": true
         },
         {
             "name": "Launch currently open script",

@@ -1,5 +1,5 @@
 <?php
-include("businesslogic/simpleLogic.php");
+require __DIR__ . '/businesslogic/simpleLogic.php';
 
 // Query Parameters 
 // ... POST-Requests either use $_POST or php://input
@@ -10,7 +10,7 @@ $param = $_GET["param"] ?? false;
 
 // handle request in SimpleLogic
 $logic = new SimpleLogic();
-$result = $logic->handleRequest($method, $param);
+$result = $logic->handleRequest($method);
 if ($result == null) {
     response("GET", 400, null);
 } else {

@@ -1,18 +1,18 @@
 <?php
 class Appointment {
     public $id;
-    public $titel;
-    public $description;
+    public $title;
+    public $descr;
     public $location;
     public $duration;
 
     public $creator;
     public $appOptons = [];
 
-    function __construct($id, $titel, $descr, $creator, $loc, $duration) {
+    function __construct($id, $title, $descr, $creator, $loc, $duration) {
         $this->id = $id;
-        $this->titel = $titel;
-        $this->description=$descr;
+        $this->title = $title;
+        $this->descr=$descr;
         $this->creator = $creator;
         $this->location=$loc;
         $this->duration=$duration;

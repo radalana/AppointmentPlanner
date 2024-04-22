@@ -1,5 +1,5 @@
 <?php
-include("db/dataHandler.php");
+require __DIR__ . '/../db/dataHandler.php';
 
 class SimpleLogic
 {
@@ -10,17 +10,14 @@ class SimpleLogic
         $this->dh = new DataHandler();
     }
 
-    function handleRequest($method, $param)
+    function handleRequest($method, $param="")
     {
         switch ($method) {
-            case "queryPersons": //queryAppointmentslist
-                return $this->dh->queryPersons();//queryAppointment?? или уже в queryAppointments
-            case "queryPersonById":
-                return $this->dh->queryPersonById($param);//delete appointment
-            case "queryPersonByName":
-                return $this->dh->queryPersonByName($param);//sent voice
+            case "queryAppointments": //queryAppointmentslist
+                //return "appointments";
+                return $this->dh->queryAppointments();//вернуть массив объектов
             default:
-                return null;
+                null;
         }
     }
 }

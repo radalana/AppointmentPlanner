@@ -18,7 +18,7 @@ class Database {
         $this->con = mysqli_connect($this->db_host, $this->db_user, $this->db_pass);
 
         if ($this->con) {
-          $seldb = mysli_select_db($this->con, $this->db_name);
+          $seldb = mysqli_select_db($this->con, $this->db_name);
 
           if ($seldb) {
             return true;
@@ -68,8 +68,8 @@ class Database {
               $result = $this->con->query($query);
 
               if ($result) {
-                $arrResult = $result->fetch_all(MYSQLI_ASSOC); //or fetch_assoc??
-                return $arrResult;
+                $arrAssoc = $result->fetch_all(MYSQLI_ASSOC);; //all rows as assoc arr
+                return $arrAssoc;
               } else {
                 return false;
               } 
