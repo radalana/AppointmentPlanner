@@ -53,8 +53,14 @@ class Database {
         }
       }
     }
-    public function select($table, $rows='*', $where = null, $order = null){
-            $query = 'SELECT '.$rows.' FROM '.$table;
+    public function select($table, $columns='*', $where = null, $order = null, $joins = []){
+            $query = 'SELECT '.$columns.' FROM '.$table;
+            
+           
+              foreach($joins as $join) {
+                $query .= ' ' . $join['type'] . ' JOIN ' . $join['table'] . ' ON ' . $join['condition'];
+              }
+           
 
             if ($where != null) {
               $query .= ' WHERE '. $where;
@@ -63,6 +69,7 @@ class Database {
             if ($order != null) {
               $query .= ' ORDER BY '.$order;
             }
+            
             
             if ($this->tableExists($table)) {
               $result = $this->con->query($query);
@@ -76,7 +83,7 @@ class Database {
             } else {//if table does not exist
               return false;
             }
-          }
+    }
     public function insert(){}
     public function delete(){}
     public function update(){}
