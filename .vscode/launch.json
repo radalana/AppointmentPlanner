@@ -1,19 +1,14 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
             "name": "Listen for XDebug",
             "type": "php",
             "request": "launch",
-            "port": 9003,
+            "port": 0,
             "stopOnEntry": false,
-      "pathMappings": {
-        "/opt/lampp/apache2/htdocs": "${workspaceFolder}" // Это должно соответствовать вашему сетапу
-      },
-      "log": true
+          
+            "log": true
         },
         {
             "name": "Launch currently open script",
@@ -22,6 +17,5 @@
             "program": "${file}",
             "cwd": "${fileDirname}",
             "port": 9000
-        }
-    ]
+        }]
 }

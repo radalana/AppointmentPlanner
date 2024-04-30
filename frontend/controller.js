@@ -6,12 +6,15 @@ $(() => {
             dataType: "json",
             cache: false,
             success: function (response) {
+                /*
                 $('#appointments').load('appointment.html', function() {
                    //console.log(response);
                     //console.log($('#appointments').html());
                     displayAppointments(response);
                     
                 });
+                */
+               displayAppointments(response);
             },
             error: function() {
                 console.error("Error in ajax!");
@@ -19,8 +22,9 @@ $(() => {
             }            
         });
 });
-function renderDates(dateOptions) {
-    const dates = dateOptions.forEach((dateOptString) => {
+/**return String */
+function renderDatesOptions(dateOptions) {
+    const datesStringParts = dateOptions.map((dateOptString) => {
         //console.log(dateOptString);
         const date = new Date(dateOptString);
         const month= date.toLocaleDateString('eng-US', { month: 'short' });
@@ -29,47 +33,60 @@ function renderDates(dateOptions) {
         const day = date.getDate();
         const hours = date.getHours();
         const min = date.getMinutes();
-        //return {month, day, weekDay, hours, min};
-        const dateCeil = $('<th class="data"></th>');
-        dateCeil.html(`<div class="d-flex flex-column justify-content-center">
+        const dateCeilString = 
+        `<th class="data"><div class="d-flex flex-column justify-content-center">
         <span class="month">${month}</span>
         <div class="day">${day}</div>
         <div class="week">${weekDay}</div>
         <div class="time">${hours}:${min.toString().padStart(2, '0')}</div>
-        </div>`);
-        console.log(dateCeil.html());
-        $("thead tr:first").append(dateCeil);
+        </div></th>`;
+        return dateCeilString;
     });
-    //return dates;
+    return datesStringParts.join();
 }
 function renderApp(objApp) {
+    const numberParticipants = 4;
     const {title, descr, location, duration, creator, dateOptions} = objApp;
-    renderDates(dateOptions);
-    
+    const datesOptions = renderDatesOptions(dateOptions);
+    const templateTable = `
+    <div class="row">
+    <form>
+        <div class="table-responsive">
+    <table class="table table-hover table-bordered table caption-top">
+    <caption id="title" class="h3">${title}</caption>
+        <thead>
+            <tr>
+            <th></th>
+            ${datesOptions}
+            </tr>
+            <tr>
+            <th>${numberParticipants}</th>
+            </tr>
+        </thead>
+        <tbody >
+            
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col">
+            <div class="mb-3">
+                <label for="comment" class="form-label">Kommentare</label>
+                <textarea class="form-control" id="comment" rows="3" placeholder="Kommentar hinzufügen"></textarea>
+            </div>
+        </div>
+    </form></div>`;
+    /*
     $('#title').text(title);
     $('#descr').text(descr);
     $('#location').text(location);
     $('#duration').text(duration);
     $('#creator').text(creator);
+    */
+   $('#appointments').append(templateTable);
 };
 
 function displayAppointments(appointments) {
-    const template = `
-    <table>
-        <thead>
-            <tr>
-            </tr>
-            <tr>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td>Title:</td><td>{{title}}</td></tr>
-            <tr><td>Description:</td><td>{{descr}}</td></tr>
-            <tr><td>Location:</td><td>{{location}}</td></tr>
-            <tr><td>Duration:</td><td>{{duration}}</td></tr>
-            <tr><td>Creator:</td><td>{{creator}}</td></tr>
-        </tbody>
-    </table>`;
-    //appointments.forEach(objApp => {renderApp(objApp)});
-    renderApp(appointments[0])
+   
+    appointments.forEach(objApp => {renderApp(objApp)});
+    //renderApp(appointments[0])
 };
