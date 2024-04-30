@@ -1,5 +1,6 @@
 <?php
 class Appointment {
+    public $id;
     public $title;
     public $descr;
     public $location;
@@ -10,7 +11,8 @@ class Appointment {
     public $expireDate;
 
     public $created_at;
-    function __construct($title, $descr, $creator, $loc, $duration, $expireDate, $created_at, $dateOptions) {
+    function __construct($id, $title, $descr, $creator, $loc, $duration, $expireDate, $created_at, $dateOptions) {
+        $this->id = $id;
         $this->title = $title;
         $this->descr=$descr;
         $this->creator = $creator;

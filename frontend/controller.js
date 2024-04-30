@@ -42,29 +42,47 @@ function renderDatesOptions(dateOptions) {
         </div></th>`;
         return dateCeilString;
     });
-    return datesStringParts.join();
+    const result = datesStringParts.join(" ");
+    //console.log(result);
+    return result;//datesStringParts.join();
 }
 function renderApp(objApp) {
     const numberParticipants = 4;
-    const {title, descr, location, duration, creator, dateOptions} = objApp;
+    const {id, title, descr, location, duration, creator, dateOptions} = objApp;
+    const numberOfDateOptions = dateOptions.length;
     const datesOptions = renderDatesOptions(dateOptions);
+    const checkBoxTemplate = `
+    <td>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="">
+            <label class="form-check-label" for="">
+            </label>
+        </div>                                  
+    </td>`;
     const templateTable = `
-    <div class="row">
-    <form>
+    <div class="row"  data-id="${id}">
+    <form method="post">
         <div class="table-responsive">
     <table class="table table-hover table-bordered table caption-top">
-    <caption id="title" class="h3">${title}</caption>
-        <thead>
+    <caption class="h3">${title}</caption>
+            <thead>
             <tr>
-            <th></th>
+            <th>${creator}</th>
             ${datesOptions}
             </tr>
             <tr>
             <th>${numberParticipants}</th>
             </tr>
         </thead>
-        <tbody >
-            
+        <tbody>
+        <tr>
+        <td>
+            <div class = "d-flex justify-content-center">
+                <i class="bi bi-person-circle text-white"></i>
+                <label><input type="text" placeholder="Your name" name=user[name]></label>
+            </div>
+        </td>
+        </tr>
         </tbody>
     </table>
     <div class="row">
@@ -75,18 +93,13 @@ function renderApp(objApp) {
             </div>
         </div>
     </form></div>`;
-    /*
-    $('#title').text(title);
-    $('#descr').text(descr);
-    $('#location').text(location);
-    $('#duration').text(duration);
-    $('#creator').text(creator);
-    */
    $('#appointments').append(templateTable);
+   for (i = 0; i < numberOfDateOptions; i++){
+    $(`[data-id="${id}"] tbody tr`).append(checkBoxTemplate);
+   }
+   
 };
 
 function displayAppointments(appointments) {
-   
-    appointments.forEach(objApp => {renderApp(objApp)});
-    //renderApp(appointments[0])
+   appointments.forEach(objApp => {renderApp(objApp)});
 };

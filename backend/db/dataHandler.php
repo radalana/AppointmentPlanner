@@ -15,7 +15,7 @@ class DataHandler
     public function queryAppointments()
     {
         if ($this->db->connect()) {
-        $columns = 'title, description, creator, location_id as loc, duration_min, expiration_date, created_at, option1, option2, option3, option4, option5';
+        $columns = 'appointments.id as id, title, description, creator, location_id as loc, duration_min, expiration_date, created_at, option1, option2, option3, option4, option5';
         $joins = [['type' => 'INNER', 'table' => 'date_options', 'condition' => 'appointments.date_options_id=date_options.id']];
         $rows = $this->db->select('appointments', $columns, null, 'created_at DESC', $joins);
         if ($rows === false) {
@@ -26,6 +26,7 @@ class DataHandler
             $dateOptions = [$row['option1'], $row['option2'], $row['option3'], $row['option4'], $row['option5']];
             $dateOptions = array_filter($dateOptions);
             return new Appointment(
+                $row['id'],
                 $row['title'],
                 $row['description'],
                 $row['creator'],
