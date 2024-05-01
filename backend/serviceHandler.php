@@ -4,8 +4,7 @@ require __DIR__ . '/businesslogic/simpleLogic.php';
 // Query Parameters 
 // ... POST-Requests either use $_POST or php://input
 $method = $_GET["method"] ?? false;
-$param = $_GET["param"] ?? false;
-
+$param = null;
 
 
 // handle request in SimpleLogic
@@ -21,10 +20,20 @@ if ($result == null) {
 function response($method, $httpStatus, $data)
 {
     header('Content-Type: application/json');
-    switch ($method) {
+    switch ($method) { 
         case "GET":
             http_response_code($httpStatus);
+            $param = $_GET["param"] ?? false;
             echo json_encode($data);
+            break;
+        case "POST":
+            $contentType = $_SERVER["CONTENT_TYPE"] ?? '';
+        if (stripos($contentType, 'application/json') !== false) {
+            $param = json_decode(file_get_contents("php://input"), true);
+        } else {
+            $param = $_POST;
+        }
+        break;
             break;
         default:
             http_response_code(405);
