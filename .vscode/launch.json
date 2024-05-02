@@ -5,7 +5,7 @@
             "name": "Listen for XDebug",
             "type": "php",
             "request": "launch",
-            "port": 0,
+            "port": 9003,
             "stopOnEntry": false,
           
             "log": true

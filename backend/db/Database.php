@@ -53,10 +53,42 @@ class Database {
         }
       }
     }
+
+    public function isExists($table, $attribute, $value) {
+      // Check if the table exists
+      if (!$this->tableExists($table)) {
+        throw new Exception("Table '{$table}' does not exist.");
+    }
+
+    // Prepare a query using a safe approach to avoid SQL injection
+    $query = "SELECT EXISTS (SELECT 1 FROM `$table` WHERE `$attribute` = ?) AS 'exists'";
+
+      // Prepare the statement
+      if ($stmt = $this->con->prepare($query)) {
+          // Bind the value parameter safely
+          $stmt->bind_param('s', $value);
+  
+          // Execute the query
+          $stmt->execute();
+  
+          // Bind the result variable
+          $stmt->bind_result($exists);
+  
+          // Fetch result
+          $stmt->fetch();
+  
+          // Close the statement
+          $stmt->close();
+  
+          // Return true if exists, false otherwise
+          return $exists;
+      } else {
+          // Throw an exception if query preparation fails
+          throw new Exception("Failed to prepare the SQL statement.");
+      }
+  }
     public function select($table, $columns='*', $where = null, $order = null, $joins = []){
             $query = 'SELECT '.$columns.' FROM '.$table;
-            
-           
               foreach($joins as $join) {
                 $query .= ' ' . $join['type'] . ' JOIN ' . $join['table'] . ' ON ' . $join['condition'];
               }
@@ -84,7 +116,78 @@ class Database {
               return false;
             }
     }
-    public function insert(){}
+    //für prepared-statmenst
+    private function determineTypes($values) {
+      $types = '';
+      foreach ($values as $value) {
+          if (is_int($value)) {
+              $types .= 'i';  // integer
+          } elseif (is_float($value)) {
+              $types .= 'd';  // double
+          } else {
+              $types .= 's';  // string
+          }
+      }
+      return $types;
+    }
+    public function insert($table, $values, $rows = null) {
+      // Check if the table exists
+      if (!$this->tableExists($table)) {
+          return false; // or throw an Exception if you prefer to handle errors that way
+      }
+  
+      // Start building the INSERT statement
+      $insert = 'INSERT INTO ' . $table;
+  
+      // Append columns if specified
+      if ($rows != null) {
+          $insert .= ' (' . implode(',', array_map(function ($col) { return "{$col}"; }, explode(',', $rows))) . ')';
+      }
+  
+      // Create placeholders for the values
+      $placeholders = array_fill(0, count($values), '?');
+      $insert .= ' VALUES (' . implode(',', $placeholders) . ')';
+  
+      // Prepare the statement
+      if ($stmt = $this->con->prepare($insert)) {
+          // Dynamically determine types for binding parameters (assuming all are strings here for simplicity)
+          $types = $this->determineTypes($values);
+          $stmt->bind_param($types, ...$values);
+  
+          // Execute the statement and check if it was successful
+          $execute = $stmt->execute();
+          $stmt->close();
+  
+          return $execute;
+      } else {
+          // Optionally, you could handle errors more gracefully here
+          error_log('MySQL Prepare error: ' . $this->con->error);
+          return false;
+      }
+  }
+  
+    public function insert2($table, $values, $rows=null){
+      if ($this->tableExists($table)) {
+        $insert = 'INSERT INTO '.$table;
+        if ($rows != null) {
+            $insert .= ' ('.$rows.')';
+        }
+        for ($i = 0; $i < count($values); $i++) {
+            $values[$i] = mysqli_real_escape_string($this->con, $values[$i]);
+            if (is_string($values[$i])) {
+                $values[$i] = '"'.$values[$i].'"';
+            }
+        }
+        $values = implode(',', $values);
+        $insert .= ' VALUES ('.$values.')';
+        $ins = mysqli_query($this->con, $insert);
+        if ($ins) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    }
     public function delete(){}
     public function update(){}
 
