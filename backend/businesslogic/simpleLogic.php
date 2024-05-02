@@ -21,7 +21,7 @@ class SimpleLogic
         //$userName = $result["user"];
         $result["appId"] = $userSelection["appId"];
         $options = [];
-        for($i = 0; $i < 5; $i++) {
+        for($i = 1; $i < 6; $i++) {
             if (array_key_exists($i, $userSelection)) {
                 $options[] = 1;
             }else {
@@ -35,10 +35,9 @@ class SimpleLogic
     function handleRequest($method, $userSelection="")
     {
         switch ($method) {
-            case "queryAppointments": //queryAppointmentslist
-                //return "appointments";
+            case "queryAppointments":
                 return $this->dh->queryAppointments();//вернуть массив объектов
-            case "sendVote"://еще trim здесь?
+            case "sendVote":
                 $formatedUserSelection = $this->format($userSelection);
                 $errors = $this->validate($formatedUserSelection);
                 if (count($errors) == 0) {

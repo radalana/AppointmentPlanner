@@ -14,7 +14,7 @@ if (isset($_POST["vote"])){
 // handle request in SimpleLogic
 $logic = new SimpleLogic();
 $result = $logic->handleRequest($method, $voteData);
-if ($result == null) {//false  было null
+if ($result == null) {
     response("GET", 400, null);
 }else {
     response("GET", 200, $result);
@@ -23,12 +23,12 @@ if ($result == null) {//false  было null
 function response($method, $httpStatus, $data)
 {
     header('Content-Type: application/json');
-    switch ($method) { //кароче тут не гет пост
+    switch ($method) {
         case "GET":
             http_response_code($httpStatus);
             echo json_encode($data);
             break;
-        case "POST"://надо ли
+        case "POST":
             http_response_code($httpStatus);
         default:
             http_response_code(405);
