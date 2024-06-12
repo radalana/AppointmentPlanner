@@ -162,7 +162,7 @@ function renderApp(objApp) {
     // Abstimmungsergebnisse rendern
    const voteResultsRows = renderAppointmentsVotionResult(results, numberOfDateOptions);
    const tbody = $(`[data-appointment-id="${id}"] tbody`);
-   voteResultsRows.forEach((row) => tbody.append(row));
+   voteResultsRows.forEach((row) => tbody.append(row);)
 };
 
 /** Anzeige von Terminen */
@@ -171,6 +171,7 @@ function displayAppointments(appointments, callback) {
     callback();
    
 };
+
 
 /** Behandlung von Formularen */
 function handleForms() {

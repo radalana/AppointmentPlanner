@@ -9,7 +9,7 @@ class SimpleLogic
     {
         $this->dh = new DataHandler();
     }
-    /* not here, but for now, remove static*/
+
     function validate($userSelection) {
         $errors = [];
         return $errors;
@@ -36,14 +36,14 @@ class SimpleLogic
     {
         switch ($method) {
             case "queryAppointments":
-                return $this->dh->queryAppointments();//вернуть массив объектов
+                return $this->dh->queryAppointments();
             case "sendVote":
                 $formatedUserSelection = $this->format($userSelection);
                 $errors = $this->validate($formatedUserSelection);
                 if (count($errors) == 0) {
-                    return $this->dh->sendVote($formatedUserSelection); //$param - assoc array (в худшем случае объект)
+                    return $this->dh->sendVote($formatedUserSelection);
                 } 
-                return false; //or null?
+                return false;
             default:
                 null;
         }
