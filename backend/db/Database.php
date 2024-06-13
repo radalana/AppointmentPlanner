@@ -60,14 +60,12 @@ class Database {
 
     // Methode zur Überprüfung, ob eine Tabelle vorhanden ist
     private function tableExists($table) {
-      $tablesInDb = mysqli_query($this->con, 'SHOW TABLES FROM '.$this->db_name.' LIKE "'.$table.'"');
-      if ($tablesInDb) {
-        if (mysqli_num_rows($tablesInDb) == 1) {
-          return true;
-        } else {
-          return false;
+        $tablesInDb = $this->con->query('SHOW TABLES FROM ' . $this->db_name . ' LIKE "' . $table . '"');
+        if (!$tablesInDb) {
+            return false;
         }
-      }
+    
+        return $tablesInDb->num_rows == 1;
     }
 
     // Methode zur Überprüfung, ob ein Wert in einer Tabelle vorhanden ist
