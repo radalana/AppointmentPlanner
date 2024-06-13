@@ -1,0 +1,17 @@
+{
+    "name": "sveta/termin-planner",
+    "autoload": {
+        "psr-4": {
+            "App\\BusinessLogic\\": "backend/businesslogic/",
+            "App\\Db\\": "backend/db/",
+            "App\\Models\\": "backend/models/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Svetlana",
+            "email": "radalana415@gmail.com"
+        }
+    ],
+    "require": {}
+}

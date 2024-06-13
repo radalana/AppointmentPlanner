@@ -1,5 +1,6 @@
 <?php
-require __DIR__ . '/businesslogic/simpleLogic.php';
+require 'vendor/autoload.php';
+//require __DIR__ . '/businesslogic/simpleLogic.php';
 
 // Query Parameters 
 // ... POST-Requests either use $_POST or php://input

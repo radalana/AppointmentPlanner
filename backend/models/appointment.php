@@ -1,27 +1,22 @@
 <?php
+use AppointmentsDetails;
 class Appointment {
-    public $id;
-    public $title;
-    public $descr;
-    public $location;
-    public $duration;
+    private $id;
+    private $title;
+    private $location;
+    private $duration;
+    private $results; //array of Object?/assoc array with user, options
 
-    public $creator;
-    public $dateOptions = [];
-    public $expireDate;
+    public function __construct($id, $title, $location, $duration, AppointmentsDetails $details) {
+      // инициировать другие поля при необходимости
+      $this->id = $id;
+      $this->title = $title;
+      $this->location = $location;
+      $this->duration = $duration;
+      $this->details = $details;
+  }
 
-    public $created_at;
-    public $results; //array of Object?/assoc array with user, options
-    function __construct($id, $title, $descr, $creator, $loc, $duration, $expireDate, $created_at, $dateOptions, $results) {
-        $this->id = $id;
-        $this->title = $title;
-        $this->descr=$descr;
-        $this->creator = $creator;
-        $this->location=$loc;
-        $this->duration=$duration;
-        $this->expireDate = $expireDate;
-        $this->created_at = $created_at;
-        $this->dateOptions = $dateOptions;
-        $this->results=$results;
-      }
+  public function setVotionsResult($results) {
+    $this->results = $results;
+  }
 }

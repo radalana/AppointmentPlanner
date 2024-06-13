@@ -36,17 +36,13 @@ class DataHandler
             // Benutzerstimmen abrufen
             $votionsResultList = $this->queryUserSelectionsWithNickname($row['id']);
                 // Terminobjekt erstellen
+                $details = new AppointmentsDetails($row['creator'], $row['description'], $row['location'], $row['duration_min'], $dateOptions);
                 return new Appointment(
                     $row['id'],
-                    $row['title'],
-                    $row['description'],
-                    $row['creator'],
+                    $row['title'], 
                     $row['location'],
                     $row['duration'],
-                    $row['expiration_date'],
-                    $row['created_at'],
-                    $dateOptions,
-                    $votionsResultList);
+                    $details).setVotionsResult($votionsResultList);
             }, $rows);
         return $result;
     }else {
