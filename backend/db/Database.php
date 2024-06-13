@@ -95,31 +95,43 @@ class Database {
           throw new Exception("Failed to prepare the SQL statement.");
       }
   }
+  private function buildSelectQuery($table, $columns, $where, $order, $joins) {
+    $query = 'SELECT ' . $columns . ' FROM ' . $table;
+    foreach ($joins as $join) {
+        $query .= ' ' . $join['type'] . ' JOIN ' . $join['table'] . ' ON ' . $join['condition'];
+    }
+    if ($where != null) {
+        $query .= ' WHERE ' . $where;
+    }
+    if ($order != null) {
+        $query .= ' ORDER BY ' . $order;
+    }
+    return $query;
+  }
+
+  private function executeSelectQuery($query) {
+    $result = $this->con->query($query);
+    if ($result) {
+        return $result->fetch_all(MYSQLI_ASSOC); // Все строки как ассоциативный массив
+    } else {
+        return false;
+    }
+}
 
     // Methode zum Auswählen von Daten aus einer Tabelle
-    public function select($table, $columns='*', $where = null, $order = null, $joins = []){
-            $query = 'SELECT '.$columns.' FROM '.$table;
-            foreach($joins as $join) {
-              $query .= ' ' . $join['type'] . ' JOIN ' . $join['table'] . ' ON ' . $join['condition'];
-            }
-            if ($where != null) {
-              $query .= ' WHERE '. $where;
-            }
-            if ($order != null) {
-              $query .= ' ORDER BY '.$order;
-            }
-            if ($this->tableExists($table)) {
-              $result = $this->con->query($query);
-              if ($result) {
-                $arrAssoc = $result->fetch_all(MYSQLI_ASSOC);; //all rows as assoc arr
-                return $arrAssoc;
-              } else {
-                return false;
-              } 
-            } else {//if table does not exist
-              return false;
-            }
-    }
+    public function select($table, $columns='*', $where = null, $order = null, $joins = []) {
+      // Ensure connection is established
+      if (!$this->connect()) {
+          throw new Exception("Failed to connect to database.");
+      }
+
+      if (!$this->tableExists($table)) {
+          throw new Exception("Table '{$table}' does not exist.");
+      }
+
+      $query = $this->buildSelectQuery($table, $columns, $where, $order, $joins);
+      return $this->executeSelectQuery($query);
+  }
 
     // Methode zum Bestimmen der Datentypen für prepared statements
     private function determineTypes($values) {
