@@ -17,34 +17,31 @@ class Database {
        $this->db_name = $db_name;
     }
     private function initializeConnection() {
-      $this->con = new \mysqli($this->db_host, $this->db_user, $this->db_pass);
-      if ($this->con->connect_error) {
-          error_log('Connection failed: ' . $this->con->connect_error);
-          return false;
-      }
-      return true;
-   }
-
-   private function selectDatabase() {
-    if (!mysqli_select_db($this->con, $this->db_name)) {
-        error_log('Database selection failed: ' . $this->con->error);
-        return false;
+        $this->con = new mysqli($this->db_host, $this->db_user, $this->db_pass);
+        if ($this->con->connect_error) {
+            error_log('Connection failed: ' . $this->con->connect_error);
+            throw new Exception("Failed to connect to database.");
+        }
+        return true;
     }
-    return true;
-}
 
-    // Methode zur Herstellung der Verbindung zur Datenbank
+    private function selectDatabase() {
+        if (!mysqli_select_db($this->con, $this->db_name)) {
+            error_log('Database selection failed: ' . $this->con->error);
+            throw new Exception("Failed to select database.");
+        }
+        return true;
+    }
+
+    // Метод для подключения к базе данных
     public function connect() {
-      if ($this->con === null) {
-          if ($this->initializeConnection()) {
-              return $this->selectDatabase();
-          } else {
-              return false;
-          }
-      } else {
-          return true;
-      }
-  }
+        if ($this->con !== null) {
+            return true;
+        }
+        $this->initializeConnection();
+        return $this->selectDatabase();
+    }
+
 
     // Methode zum Trennen der Verbindung zur Datenbank
     public function disconnect() {
