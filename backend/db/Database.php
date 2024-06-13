@@ -95,21 +95,55 @@ class Database {
           throw new Exception("Failed to prepare the SQL statement.");
       }
   }
-  private function buildSelectQuery($table, $columns, $where, $order, $joins) {
+  public function select($table, $columns = '*', $clauses = []) {
+    // Ensure connection is established
+    if (!$this->connect()) {
+        throw new Exception("Failed to connect to database.");
+    }
+
+    if (!$this->tableExists($table)) {
+        throw new Exception("Table '{$table}' does not exist.");
+    }
+
+    $query = $this->buildSelectQuery($table, $columns, $clauses);
+    return $this->executeSelectQuery($query);
+}
+
+// Метод для построения SELECT запроса
+private function buildSelectQuery($table, $columns, $clauses) {
     $query = 'SELECT ' . $columns . ' FROM ' . $table;
+    $query = $this->addJoinsToQuery($query, $clauses['joins'] ?? []);
+    $query = $this->addWhereToQuery($query, $clauses['where'] ?? null);
+    $query = $this->addOrderToQuery($query, $clauses['order'] ?? null);
+    return $query;
+}
+
+// Метод для добавления JOIN к запросу
+private function addJoinsToQuery($query, $joins) {
     foreach ($joins as $join) {
         $query .= ' ' . $join['type'] . ' JOIN ' . $join['table'] . ' ON ' . $join['condition'];
     }
+    return $query;
+}
+
+// Метод для добавления WHERE к запросу
+private function addWhereToQuery($query, $where) {
     if ($where != null) {
         $query .= ' WHERE ' . $where;
     }
+    return $query;
+}
+
+// Метод для добавления ORDER BY к запросу
+private function addOrderToQuery($query, $order) {
     if ($order != null) {
         $query .= ' ORDER BY ' . $order;
     }
     return $query;
-  }
+}
 
-  private function executeSelectQuery($query) {
+// Метод для выполнения SELECT запроса
+private function executeSelectQuery($query) {
     $result = $this->con->query($query);
     if ($result) {
         return $result->fetch_all(MYSQLI_ASSOC); // Все строки как ассоциативный массив
@@ -117,21 +151,6 @@ class Database {
         return false;
     }
 }
-
-    // Methode zum Auswählen von Daten aus einer Tabelle
-    public function select($table, $columns='*', $where = null, $order = null, $joins = []) {
-      // Ensure connection is established
-      if (!$this->connect()) {
-          throw new Exception("Failed to connect to database.");
-      }
-
-      if (!$this->tableExists($table)) {
-          throw new Exception("Table '{$table}' does not exist.");
-      }
-
-      $query = $this->buildSelectQuery($table, $columns, $where, $order, $joins);
-      return $this->executeSelectQuery($query);
-  }
 
     // Methode zum Bestimmen der Datentypen für prepared statements
     private function determineTypes($values) {
