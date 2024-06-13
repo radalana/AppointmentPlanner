@@ -1,4 +1,6 @@
 <?php
+use Exception;
+use mysqli;
 // Datenbankklasse für die Verbindung und Operationen
 class Database {
     private $db_host = '';
