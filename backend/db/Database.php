@@ -87,7 +87,7 @@ class Database {
         $stmt->bind_result($existsInTable);
         $stmt->fetch();
         $stmt->close();
-        
+
         // Return true if exists, false otherwise
         return (bool)$existsInTable;
   }
@@ -150,18 +150,21 @@ private function executeSelectQuery($query) {
 
     // Methode zum Bestimmen der Datentypen für prepared statements
     private function determineTypes($values) {
-      $types = '';
-      foreach ($values as $value) {
-          if (is_int($value)) {
-              $types .= 'i';  // integer
-          } elseif (is_float($value)) {
-              $types .= 'd';  // double
-          } else {
-              $types .= 's';  // string
-          }
-      }
-      return $types;
+        $types = '';
+            foreach ($values as $value) {
+                if (is_int($value)) {
+                    $types .= 'i';  // integer
+                    continue;
+                }
+                if (is_float($value)) {
+                    $types .= 'd';  // double
+                    continue;
+                }
+                $types .= 's';  // string
+            }
+        return $types;
     }
+
 
     // Methode zum Einfügen von Daten in eine Tabelle
     public function insert($table, $values, $rows = null) {
