@@ -75,21 +75,21 @@ class Database {
     $query = "SELECT EXISTS (SELECT 1 FROM `$table` WHERE `$attribute` = ?) AS 'exists'";
 
       // Prepare the statement
-      if ($stmt = $this->con->prepare($query)) {
-          // Bind the value parameter safely
-          $stmt->bind_param('s', $value);
-          $stmt->execute();
-          $existsInTable = null;
-          $stmt->bind_result($existsInTable);
-          $stmt->fetch();
-          $stmt->close();
-  
-          // Return true if exists, false otherwise
-          return (bool)$existsInTable;
-      } else {
-          // Throw an exception if query preparation fails
-          throw new Exception("Failed to prepare the SQL statement.");
+      $stmt = $this->con->prepare($query);
+      if (!$stmt) {
+           // Throw an exception if query preparation fails
+           throw new Exception("Failed to prepare the SQL statement.");
       }
+        // Bind the value parameter safely
+        $stmt->bind_param('s', $value);
+        $stmt->execute();
+        $existsInTable = null;
+        $stmt->bind_result($existsInTable);
+        $stmt->fetch();
+        $stmt->close();
+        
+        // Return true if exists, false otherwise
+        return (bool)$existsInTable;
   }
   public function select($table, $columns = '*', $clauses = []) {
     // Ensure connection is established
