@@ -48,14 +48,13 @@ class Database {
 
     // Methode zum Trennen der Verbindung zur Datenbank
     public function disconnect() {
-       if ($this->con) {
-          if (mysqli_close($this->con)) {
-            $this->con = false;
-            return true;
-          } else {
+        if ($this->con !== null) {
+            if ($this->con->close()) {
+                $this->con = null;
+                return true;
+            }
             return false;
-          }
-       }
+        }
     }
 
     // Methode zur Überprüfung, ob eine Tabelle vorhanden ist
