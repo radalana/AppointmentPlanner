@@ -5,7 +5,7 @@ class Database {
     private $db_user = '';
     private $db_pass = '';
     private $db_name = '';
-    private $con = '';
+    private $con = null;
 
     // Methode zur Herstellung der Verbindung zur Datenbank
     public function __construct($db_host, $db_user, $db_pass, $db_name) {
