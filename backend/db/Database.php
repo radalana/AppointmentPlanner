@@ -73,12 +73,13 @@ class Database {
           // Bind the value parameter safely
           $stmt->bind_param('s', $value);
           $stmt->execute();
-          $stmt->bind_result($exists);
+          $existsInTable = null;
+          $stmt->bind_result($existsInTable);
           $stmt->fetch();
           $stmt->close();
   
           // Return true if exists, false otherwise
-          return $exists;
+          return (bool)$existsInTable;
       } else {
           // Throw an exception if query preparation fails
           throw new Exception("Failed to prepare the SQL statement.");
